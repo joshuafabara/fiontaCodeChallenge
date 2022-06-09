@@ -1,6 +1,5 @@
 <?php
 
-use Drupal\Core\Serialization\Yaml;
 use Drupal\webform\Entity\Webform;
 
 /**
@@ -14,67 +13,6 @@ function meals_form_theme() {
       ],
     ],
   ];
-}
-
-function meals_form_node_view($node, $view_mode, $langcode) {
-  // Try to create the webform
-  $webform_machinename = 'meals_form_2';
-  $form = \Drupal::entityTypeManager()->getStorage('webform')->load($webform_machinename);
-  if (!isset($form)) {
-    // Build a render array of elements.
-    $elements = [
-      'name' => [
-        '#type' => 'textfield',
-        '#title' => 'Name',
-        '#required' => true,
-      ],
-      'email' => [
-        '#type' => 'email',
-        '#title' => 'Email',
-        '#required' => true,
-        '#unique' => true,
-      ],
-      'type_of_meal' => [
-        '#type' => 'select',
-        '#title' => 'Type of Meal',
-        '#options' => [
-          'meat' => 'Meat',
-          'fish' => 'Fish',
-          'vegetarian' => 'Vegetarian',
-        ],
-        '#required' => true,
-      ],
-      'dietary_restrictions' => [
-        '#type' => 'select',
-        '#title' => 'Dietary Restrictions',
-        '#options' => [
-          'glutenfree' => 'Gluten Free',
-          'dairyfree' => 'Dairy Free',
-        ],
-        '#empty_option' => 'No Restrictions',
-        '#empty_value' => 'no',
-      ],
-      'special_instructions_or_other_dietary_restrictions' => [
-        '#type' => 'textarea',
-        '#title' => 'Special Instructions or Other Dietary Restrictions',
-      ],
-    ];
-
-    $settings = [
-      // Define settings.
-    ];
-
-    // Append default settings.
-    $settings += Webform::getDefaultSettings();
-
-    $webform = Webform::create([
-      'id' => $webform_machinename,
-      'title' => 'Meals Form',
-      'elements' => Yaml::encode($elements),
-      'settings' => $settings,
-    ]);
-    $webform->save();
-  }
 }
 
 /**
