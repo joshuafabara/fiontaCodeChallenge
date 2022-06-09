@@ -66,5 +66,5 @@ SOLUTION EXPLAINED
 
 IMPORTANT LINKS
 ---------------
-Meals preference form: [$root]/webform/meals_form (For anonymous users)
+Meals selection form: [$root]/meals-selection (For anonymous users)
 Meals summary page: [$root]/meals-summary (For Admins only)
