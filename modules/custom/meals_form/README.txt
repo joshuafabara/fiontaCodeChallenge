@@ -62,3 +62,9 @@ SOLUTION EXPLAINED
    variable that will be sent to the template in order to render the summary for meal types' amounts.
 
 6. Added the template for the meals summary page that renders the required summary.
+
+
+IMPORTANT LINKS
+---------------
+Meals preference form: [$root]/webform/meals_form (For anonymous users)
+Meals summary page: [$root]/meals-summary (For Admins only)
