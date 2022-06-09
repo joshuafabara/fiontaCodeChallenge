@@ -1,0 +1,7 @@
+name: Meals Form
+type: module
+description: 'Creates a for on a custom url so individuals can fill with meal preferences and admins can see a summary.'
+package: Development
+core_version_requirement: ^8 || ^9
+dependencies:
+  - webform:webform

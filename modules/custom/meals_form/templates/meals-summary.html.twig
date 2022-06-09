@@ -1,0 +1,13 @@
+<section class="meals-summary">
+  <div class="meals-summary__container">
+    {% if meals|length > 0 %}
+      {% for mealType,amount in meals %}
+        <div class="meals-summary__type-container">
+          <span class="meals-summary__type">{{ mealType }}: </span><span class="meals-summary__amount">{{ amount }}</span>
+        </div>
+      {% endfor %}
+    {% else %}
+      There are no submissions yet.
+    {% endif %}
+  </div>
+</section>

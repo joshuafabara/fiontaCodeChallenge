@@ -1,0 +1,8 @@
+meals_form.summary_page:
+  path: '/meals-summary'
+  defaults:
+    _controller: '\Drupal\meals_form\Controller\MealsFormController::mealsSummary'
+    _title: 'Meals Summary'
+  requirements:
+    _role: 'administrator'
+  

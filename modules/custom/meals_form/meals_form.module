@@ -1,0 +1,132 @@
+<?php
+
+use Drupal\Core\Serialization\Yaml;
+use Drupal\webform\Entity\Webform;
+
+/**
+ * Implements hook_theme().
+ */
+function meals_form_theme() {
+  return [
+  'meals_summary' => [
+      'variables' => [
+        'meals' => array()
+      ],
+    ],
+  ];
+}
+
+function meals_form_node_view($node, $view_mode, $langcode) {
+  // Try to create the webform
+  $webform_machinename = 'meals_form_2';
+  $form = \Drupal::entityTypeManager()->getStorage('webform')->load($webform_machinename);
+  if (!isset($form)) {
+    // Build a render array of elements.
+    $elements = [
+      'name' => [
+        '#type' => 'textfield',
+        '#title' => 'Name',
+        '#required' => true,
+      ],
+      'email' => [
+        '#type' => 'email',
+        '#title' => 'Email',
+        '#required' => true,
+        '#unique' => true,
+      ],
+      'type_of_meal' => [
+        '#type' => 'select',
+        '#title' => 'Type of Meal',
+        '#options' => [
+          'meat' => 'Meat',
+          'fish' => 'Fish',
+          'vegetarian' => 'Vegetarian',
+        ],
+        '#required' => true,
+      ],
+      'dietary_restrictions' => [
+        '#type' => 'select',
+        '#title' => 'Dietary Restrictions',
+        '#options' => [
+          'glutenfree' => 'Gluten Free',
+          'dairyfree' => 'Dairy Free',
+        ],
+        '#empty_option' => 'No Restrictions',
+        '#empty_value' => 'no',
+      ],
+      'special_instructions_or_other_dietary_restrictions' => [
+        '#type' => 'textarea',
+        '#title' => 'Special Instructions or Other Dietary Restrictions',
+      ],
+    ];
+
+    $settings = [
+      // Define settings.
+    ];
+
+    // Append default settings.
+    $settings += Webform::getDefaultSettings();
+
+    $webform = Webform::create([
+      'id' => $webform_machinename,
+      'title' => 'Meals Form',
+      'elements' => Yaml::encode($elements),
+      'settings' => $settings,
+    ]);
+    $webform->save();
+  }
+}
+
+/**
+ * Implements hook_webform_submission_presave().
+ */
+function meals_form_webform_submission_presave(\Drupal\webform\WebformSubmissionInterface $submission) {
+  if ($submission->getWebform()->id() == 'meals_form') {
+    $data = $submission->getData();
+    if (!empty($data['special_instructions_or_other_dietary_restrictions'])) {
+
+      $mailManager = \Drupal::service('plugin.manager.mail');
+      $module = 'meals_form';
+      $key = 'special_instructions';
+      $system_site_config = \Drupal::config('system.site');
+      $site_email = $system_site_config->get('mail');
+      $to = $site_email;
+      $params['name'] = $data['name'];
+      $params['email'] = $data['email'];
+      $params['mealtype'] = ucwords($data['type_of_meal']);
+      $params['restrictions'] = $data['dietary_restrictions'];
+      $params['instructions'] = $data['special_instructions_or_other_dietary_restrictions'];
+      $langcode = \Drupal::currentUser()->getPreferredLangcode();
+      $send = true;
+     
+      $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+      if ($result['result'] !== true) {
+        \Drupal::messenger()->addMessage(t('Your submission was succesfully sent but we couldn\'t notify the staff about the special instructions for your meal.'), 'error');
+      }
+      else {
+        \Drupal::messenger()->addMessage(t('Your submission was successfully sent.'));
+      }
+    }
+  }
+}
+
+/**
+* Implements hook_mail().
+*/
+function meals_form_mail($key, &$message, $params) {
+  $options = array(
+    'langcode' => $message['langcode'],
+  );
+
+  switch ($key) {
+    case 'special_instructions':
+      $message['from'] = 'mealforms@fionta.com';
+      $message['subject'] = t('New meal order with special instructions created.');
+      $message['body'][] = t('Order Details:');
+      $message['body'][] = t('Name: @name. Email: @email', ['@name' => $params['name'], '@email' => $params['email']]);
+      $message['body'][] = t('Meal Type: @mealtype.', ['@mealtype' => $params['mealtype']]);
+      $message['body'][] = t('Dietary Restrictions: @restrictions.', ['@restrictions' => $params['restrictions']]);
+      $message['body'][] = t('Special Instructions: @instructions.', ['@instructions' => $params['instructions']]);
+      break;
+  }
+}
