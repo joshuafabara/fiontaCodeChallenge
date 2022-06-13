@@ -66,6 +66,6 @@ SOLUTION EXPLAINED
 
 IMPORTANT LINKS
 ---------------
-** Meals selection form: [$root]/meals-selection (For anonymous users) **
+**Meals selection form: [$root]/meals-selection (For anonymous users)**
 
-** Meals summary page: [$root]/meals-summary (For Admins only) **
+**Meals summary page: [$root]/meals-summary (For Admins only)**
