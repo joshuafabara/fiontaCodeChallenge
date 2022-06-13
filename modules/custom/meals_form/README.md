@@ -58,7 +58,7 @@ SOLUTION EXPLAINED
    the definition of the controller and the function that will provide the markup for the page.
    This route will be only for admin roles.
 
-5. Added the logic for getting all the form submissions for the meals form and built the meals 
+5. Added the logic for getting all the form submissions for the meals form and build the meals 
    variable that will be sent to the template in order to render the summary for meal types' amounts.
 
 6. Added the template for the meals summary page that renders the required summary.
