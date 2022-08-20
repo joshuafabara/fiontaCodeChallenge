@@ -1,0 +1,14 @@
+joshuamodule.toptal_page:
+  path: '/toptal-page'
+  defaults:
+    _controller: '\Drupal\joshuamodule\Controller\JoshuaModuleController::toptalPage'
+    _title: 'Toptal Page'
+  requirements:
+    _role: 'administrator'
+joshuamodule.toptal_form:
+  path: '/admin/config/content/toptal'
+  defaults:
+    _form: '\Drupal\joshuamodule\Form\ToptalForm'
+    _title: 'Toptal Form'
+  requirements:
+    _permission: 'administer toptal page'

@@ -1,20 +1,3 @@
-IMPORTANT NOTE
---------------
-
-------------------------------------------------------------------------------------------
-If you want to test this module (Meals form) on a clean D9 installation just:
-
-*  Clone the repo locally.
-*  Run 'lando start' on the webroot. (Don't forget to install Lando first)
-*  Run 'lando composer install'
-*  Run 'lando drush site:install --db-url=mysql://drupal9:drupal9@database/drupal9 -y'
-
-That's it. After those steps you can just go ahead and run 'lando drush en -y meals_form'
-
-Further instructions are given on the module README.txt file.
-
-------------------------------------------------------------------------------------------
-
 <img alt="Drupal Logo" src="https://www.drupal.org/files/Wordmark_blue_RGB.png" height="60px">
 
 Drupal is an open source content management platform supporting a variety of

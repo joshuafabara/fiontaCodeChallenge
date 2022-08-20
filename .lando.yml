@@ -1,4 +1,10 @@
 name: fiontacodechallenge
 recipe: drupal9
-config:
-  webroot: .
+# config:
+#   webroot: .
+services:
+  appserver:
+    webroot: .
+    xdebug: debug
+    config:
+      php: .vscode/php.ini

@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function joshuamodule_theme() {
+  return [
+  'toptal_page' => [
+      'variables' => [
+        'title' => 'Toptal default subtitle',
+        'content' => 'Toptal default content',
+      ],
+    ],
+  ];
+}
